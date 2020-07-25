@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Chatbot Chaos</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono">
+    <link rel="icon" href="https://media.discordapp.net/attachments/720097811135201291/736639306118201355/image0.png?width=855&height=1224">
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="/socket.io/socket.io.js"></script>
+		<script src='index.js' defer></script>
+
+
+    <script src="background.js" defer></script>
+    
+    <!-- import p5 things -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.dom.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.0.0/addons/p5.sound.min.js"></script>
+    <script src="https://cdn.JsDelivr.net/gh/bmoren/p5.collide2D/p5.collide2d.min.js"></script>
+
+
+    <link rel="icon" href="https://cdn.discordapp.com/attachments/720097811135201291/736639306118201355/image0.png">
+	</head>
+	<body>
+		<h1>Chatbot Chaos!</h1>
+    <h3>Chat with 2 real people and 1 chatbot, then try to guess which one's the chatbot</h3>
+    <img src = "https://media.discordapp.net/attachments/720097811135201291/736639306118201355/image0.png?width=855&height=1224" 
+    style = "height: 400px"><br><br>
+		<input id='name' placeholder="Enter Your Name Here">
+		<button type='submit' onclick="enterGame()">Submit</button>
+		<br>
+		<img style="display: none" id="waiting" src="https://file.mockplus.com/image/2018/04/5fc8b569-d76f-4d5d-809a-6dc6968e28f7.gif">
+	</body>
+</html>
