@@ -26,16 +26,9 @@ function setup(){
 function draw(){
   //frameRate(10);
   background(0);
-  drawPieces();
-}
-
-function drawPieces(){
   fill(200, 40, 80, 0.7);
   
   for(var i = 0; i < pieces.length; i++){
-    //console.log(pieces[i].v1 + "|" + pieces[i].v2);
-    // ellipse(pieces[i].x, pieces[i].y, 10);
-    
     push();
     noStroke();
     translate(pieces[i].x + pieces[i].v1[0], pieces[i].y + pieces[i].v1[1]);
@@ -52,5 +45,4 @@ function drawPieces(){
     pieces[i].x = (pieces[i].x + pieces[i].vx)%width
     pieces[i].y = (pieces[i].y + pieces[i].vy)%height;
 	}
-  
 }

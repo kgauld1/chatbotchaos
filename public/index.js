@@ -47,7 +47,10 @@ socket.on('chat', ({name, text}) => {
 	let html = `
 		<p><b>${name}:</b> ${text}</p>
 	`;
-	document.getElementById('chat').innerHTML += html;
+	let chat = document.getElementById('chat')
+	chat.innerHTML += html;
+	chat.scrollTop = chat.scrollHeight;
+
 })
 
 socket.on('end', async ({won, name}) => {
