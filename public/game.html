@@ -2,13 +2,18 @@
 
 <all>
 	<div>
-		<h1>The Chat Starts Here</h1>
+		<h1>Chat Room</h1>
 		<hr>
 	</div>
-  <div class="messages">
-	  <div id="chat"></div>
-  </div>
   <center>
-	  <input id='text' type='text' onkeyup="sendChat(this)">
-  </center>
+    <div class="messages">
+      <div id="chat"></div>
+    </div>
+  <center>
+
+  <p>Guess who's the chatbot:</p>
+	<form id='votes'></form>
+
+	<input id='text' type='text' onkeyup="sendChat(this)">
+
 </all>

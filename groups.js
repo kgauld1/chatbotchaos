@@ -10,8 +10,52 @@ function cleanName(str){
 	return str;
 }
 
+
+
 module.exports = (http) => {
 	var io = require('socket.io')(http);
+
+	class Room{
+		constructor(id, sockets){
+			this.id = id;
+			this.players = sockets;
+			this.names = [];
+			this.votes = [];
+			for (let p of sockets){
+				this.names.push([p.name, p.id]);
+				this.votes.push(null);
+			}
+			this.chat = [];
+			this.chatbotId = "happybananas";
+			this.chatbotName = 'jack';
+			this.names.push([this.chatbotName, this.chatbotId]);
+			setTimeout(() => {
+				this.end(false);
+			}, 60000);
+		}
+		start(){
+			io.in(this.id).emit('starting', this.names);
+		}
+		sendChat(name, message){
+			io.in(this.id).emit('chat', {text: message, name: name});
+			this.chat.push({text: message, name: name});
+			if (Math.random() < 0.25){
+				let allText = "";
+				for (let c of this.chat) allText += c.text + ".";
+				if (allText.length > 1000) allText = allText.substr(allText.length-1000);
+				console.log('alltext', allText);
+			}
+		}
+		vote(socket, id){
+			let ind = this.players.indexOf(socket);
+			this.votes[ind] = id == this.chatbotId;
+			if (this.votes.every(x => x===true)) this.end(true);
+
+		}
+		end(cond){
+			io.in(this.id).emit('end', {won: cond, name: this.chatbotName});
+		}
+	}
 
 	var rooms = {};
 	var stor = {};
@@ -32,29 +76,30 @@ module.exports = (http) => {
 				socket.emit('error');
 				return;
 			}
+			socket['name'] = name;
 			waiting.push(socket);
 			socket.emit('waiting');
 			console.log('waiting', waiting.length);
 			if (waiting.length >= 2) {
 				roomId = Math.round(Math.random()*1e10);
-				console.log('room:', roomId);
-				rooms[roomId] = {
-					players: waiting.splice(0, 2),
-					chat: []
-				};
+				rooms[roomId] = new Room(roomId, waiting.splice(0, 2));
 				for (let s of rooms[roomId].players){
 					s.join(roomId);
-					console.log(s.id);
-					s.emit("starting");
 					stor[s.id] = roomId;
 				}
+				rooms[roomId].start();
 			}
 		});
 
 		socket.on('chat', message => {
 			let group = stor[socket.id];
 			message = clean(message);
-			io.to(group).emit('chat', {text: message, name: name});
+			rooms[group].sendChat(name, message);
+		});
+
+		socket.on('vote', id => {
+			let group = stor[socket.id];
+			rooms[group].vote(socket, id);
 		});
 		
 		socket.on('disconnect', () => {

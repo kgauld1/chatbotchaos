@@ -22,8 +22,13 @@ socket.on('waiting', () => {
 	document.getElementById('waiting').style.display="inline-block";
 });
 
-socket.on('starting', () => {
-	replaceBody('/game.html');
+socket.on('starting', async (names) => {
+	console.log(names);
+	await replaceBody('/game.html');
+	let v = document.getElementById('votes');
+	for (let i = 0; i < names.length; i++){
+		v.innerHTML += `<span>${names[i][0]} <input type="radio" id="${names[i][1]}" onclick=vote(this.id)> </span>`
+	}
 });
 
 function sendChat(obj){
@@ -34,9 +39,22 @@ function sendChat(obj){
 	}
 }
 
+function vote(id){
+	socket.emit('vote', id);
+}
+
 socket.on('chat', ({name, text}) => {
 	let html = `
 		<p><b>${name}:</b> ${text}</p>
 	`;
 	document.getElementById('chat').innerHTML += html;
+})
+
+socket.on('end', async ({won, name}) => {
+	await replaceBody('/winlose.html');
+	let h1 = document.getElementById('condition');
+	let h2 = document.getElementById('chatbotName');
+	if (won) h1.innerHTML = "You won!";
+	else h1.innerHTML = "You lost.";
+	h2.innerHTML = "The chatbot's name was " + name;
 })
