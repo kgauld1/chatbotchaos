@@ -43,7 +43,7 @@ module.exports = (http) => {
 		sendChat(name, message){
 			io.in(this.id).emit('chat', {text: message, name: name});
 			this.chat.push({text: message, name: name});
-			if (Math.random() < 0.25){
+			if (Math.random() < 0.35){
 				let allText = "";
 				for (let c of this.chat) allText += c.text + ". ";
 				if (allText.length > 1000) allText = allText.substr(allText.length-1000);
@@ -64,6 +64,7 @@ module.exports = (http) => {
 						}
 				}).then(resp => resp.json()).then(j => {
 					let txt = j.data.text;
+					console.log(j);
 					io.in(this.id).emit('chat', {text: txt, name: this.chatbotName});
 					this.chat.push({text: txt, name: this.chatbotName});
 				})

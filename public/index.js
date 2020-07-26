@@ -47,10 +47,10 @@ socket.on('chat', ({name, text}) => {
 	let html = `
 		<p><b>${name}:</b> ${text}</p>
 	`;
-	let chat = document.getElementById('chat')
+	let chat = document.getElementById('chat');
 	chat.innerHTML += html;
-	chat.scrollTop = chat.scrollHeight;
-
+	let msgs = document.getElementById('messages');
+	msgs.scrollTop = msgs.scrollHeight - msgs.clientHeight;
 })
 
 socket.on('end', async ({won, name}) => {
